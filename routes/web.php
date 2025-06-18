@@ -10,11 +10,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::prefix('books')->name('books.')->group(function () {
-    Route::get('/{id}', [BookController::class, 'show'])->name('show');
-    Route::get('/{id}/read', [BookController::class, 'read'])->name('read');
+    // MODIFIED: Changed the route parameter to be more descriptive and accept slashes.
+    Route::get('/{openLibraryId}', [BookController::class, 'show'])->name('show')->where('openLibraryId', '.*');
+
+    // MODIFIED: Also update the other routes to use the same logic.
+    Route::get('/{openLibraryId}/read', [BookController::class, 'read'])->name('read')->where('openLibraryId', '.*');
 
     Route::middleware('auth')->group(function () {
-        Route::post('/{id}/library', [BookController::class, 'addToLibrary'])->name('add-to-library');
+        Route::post('/{openLibraryId}/library', [BookController::class, 'addToLibrary'])->name('add-to-library')->where('openLibraryId', '.*');
         Route::patch('/{id}/progress', [BookController::class, 'updateProgress'])->name('update-progress');
     });
 });

@@ -11,7 +11,7 @@
                 Access thousands of books from OpenLibrary and build your personal reading collection
             </p>
 
-            <form action="{{ route('search.index') }}" method="GET" class="flex">
+            <form action="{{ route('search') }}" method="GET" class="flex">
                 <input type="text" name="q" placeholder="Search books..."
                     class="px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value="{{ request('q') }}">

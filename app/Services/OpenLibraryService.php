@@ -71,12 +71,16 @@ class OpenLibraryService
     public function getBookText($bookKey)
     {
         try {
-            // Note: OpenLibrary doesn't provide full text for most books
-            // This would need to be implemented with Internet Archive API
-            $response = $this->client->get("https://archive.org/details/{$bookKey}");
-            return $response->getBody();
+            // The Internet Archive identifier is often the same as the Open Library ID (e.g., OL...M)
+            // You may need to adjust this based on the format of your `openlibrary_id`.
+            // This example attempts to get the plain text version of the book.
+
+            // It is a good practice to use the Guzzle client you've already configured.
+            $response = $this->client->get("https://archive.org/stream/{$bookKey}/{$bookKey}_djvu.txt");
+            return $response->getBody()->getContents();
         } catch (RequestException $e) {
-            Log::error('Book text retrieval error: ' . $e->getMessage());
+            // Log the error and return null if the book content cannot be fetched.
+            Log::error('Internet Archive API Error for book key ' . $bookKey . ': ' . $e->getMessage());
             return null;
         }
     }
